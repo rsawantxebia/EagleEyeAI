@@ -181,3 +181,18 @@ yolov8*.pt
 
 # Python version files
 .python-version
+
+
+# Node / Angular
+node_modules/
+.npm/
+.npmrc
+.npm/_cacache/
+
+# Angular build
+dist/
+.angular/
+
+# Logs
+*.log
+
