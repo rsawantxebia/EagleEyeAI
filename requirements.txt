@@ -1,0 +1,22 @@
+# ANPR System Requirements
+# Python 3.9 or 3.10
+
+# FastAPI and server
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.5.0
+python-multipart==0.0.6
+
+# Database
+sqlalchemy==2.0.23
+psycopg2-binary==2.9.9
+alembic==1.12.1
+
+# Computer Vision
+opencv-python==4.8.1.78
+ultralytics==8.1.0
+easyocr==1.7.1
+
+# Utilities
+python-dotenv==1.0.0
+numpy==1.24.3

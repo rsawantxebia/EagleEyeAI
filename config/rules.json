@@ -1,0 +1,26 @@
+{
+  "event_rules": [
+    {
+      "rule_name": "blacklisted_vehicle",
+      "action": "ALERT",
+      "description": "Alert when blacklisted vehicle is detected"
+    },
+    {
+      "rule_name": "unauthorized_entry",
+      "action": "ALERT",
+      "description": "Alert for unauthorized entry attempts"
+    },
+    {
+      "rule_name": "normal_entry",
+      "action": "ALLOW",
+      "description": "Allow normal vehicle entries"
+    },
+    {
+      "rule_name": "suspicious_activity",
+      "action": "LOG_ONLY",
+      "description": "Log suspicious activities for review"
+    }
+  ],
+  "blacklisted_plates": [],
+  "authorized_plates": []
+}

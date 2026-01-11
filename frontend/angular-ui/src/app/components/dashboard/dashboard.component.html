@@ -1,0 +1,66 @@
+<div class="dashboard-container">
+  <h2>Dashboard</h2>
+
+  <div class="action-section">
+    <div class="upload-controls">
+      <div class="file-upload">
+        <label for="file-input" class="file-label">
+          <input type="file" id="file-input" accept="image/*" (change)="onFileSelected($event)" style="display: none;">
+          Choose Image File
+        </label>
+        <span *ngIf="selectedFile" class="file-name">{{ selectedFile.name }}</span>
+      </div>
+      <div class="url-input">
+        <input type="text" [(ngModel)]="imageUrl" placeholder="Or enter image URL" class="url-field">
+      </div>
+      <button (click)="triggerDetection()" [disabled]="loading" class="detect-button">
+        {{ loading ? 'Processing...' : 'Detect Plate' }}
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <div class="dashboard-grid">
+    <div class="card">
+      <h3>Recent Detections</h3>
+      <div *ngIf="loading && recentDetections.length === 0" class="loading">
+        Loading...
+      </div>
+      <div *ngIf="!loading && recentDetections.length === 0" class="empty">
+        No detections found
+      </div>
+      <ul class="detection-list" *ngIf="recentDetections.length > 0">
+        <li *ngFor="let detection of recentDetections" class="detection-item">
+          <div class="plate-text">{{ detection.plate_text }}</div>
+          <div class="detection-meta">
+            <span>Confidence: {{ (detection.confidence * 100).toFixed(1) }}%</span>
+            <span>{{ detection.timestamp | date:'short' }}</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Recent Events</h3>
+      <div *ngIf="loading && recentEvents.length === 0" class="loading">
+        Loading...
+      </div>
+      <div *ngIf="!loading && recentEvents.length === 0" class="empty">
+        No events found
+      </div>
+      <ul class="event-list" *ngIf="recentEvents.length > 0">
+        <li *ngFor="let event of recentEvents" [class]="'event-item event-' + event.event_type.toLowerCase()">
+          <div class="event-type">{{ event.event_type }}</div>
+          <div class="event-details">
+            <div>{{ event.plate_text || 'N/A' }}</div>
+            <div class="event-description">{{ event.description }}</div>
+            <div class="event-time">{{ event.timestamp | date:'short' }}</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<nav class="navbar">
+  <div class="nav-container">
+    <h1>{{ title }}</h1>
+    <ul class="nav-menu">
+      <li><a routerLink="/dashboard" routerLinkActive="active">Dashboard</a></li>
+      <li><a routerLink="/logs" routerLinkActive="active">Vehicle Logs</a></li>
+      <li><a routerLink="/alerts" routerLinkActive="active">Alerts</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="main-content">
+  <router-outlet></router-outlet>
+</main>

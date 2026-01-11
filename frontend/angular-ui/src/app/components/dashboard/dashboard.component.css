@@ -1,0 +1,174 @@
+.dashboard-container {
+  padding: 2rem;
+}
+
+.dashboard-container h2 {
+  margin-bottom: 2rem;
+  color: #2c3e50;
+}
+
+.action-section {
+  margin-bottom: 2rem;
+}
+
+.upload-controls {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.file-upload {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.file-label {
+  background-color: #3498db;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.file-label:hover {
+  background-color: #2980b9;
+}
+
+.file-name {
+  color: #2c3e50;
+  font-size: 0.9rem;
+}
+
+.url-input {
+  flex: 1;
+  min-width: 200px;
+}
+
+.url-field {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #bdc3c7;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.detect-button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.detect-button:hover:not(:disabled) {
+  background-color: #2980b9;
+}
+
+.detect-button:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+}
+
+.error-message {
+  background-color: #e74c3c;
+  color: white;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 2rem;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+}
+
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.card h3 {
+  margin-top: 0;
+  color: #2c3e50;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 0.5rem;
+}
+
+.detection-list,
+.event-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.detection-item,
+.event-item {
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 4px;
+  background-color: #f8f9fa;
+  border-left: 4px solid #3498db;
+}
+
+.plate-text {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.detection-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: #7f8c8d;
+}
+
+.event-type {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+}
+
+.event-allow .event-type {
+  color: #27ae60;
+}
+
+.event-alert .event-type {
+  color: #e74c3c;
+}
+
+.event-log_only .event-type {
+  color: #f39c12;
+}
+
+.event-details {
+  font-size: 0.9rem;
+}
+
+.event-description {
+  color: #7f8c8d;
+  margin: 0.5rem 0;
+}
+
+.event-time {
+  color: #95a5a6;
+  font-size: 0.875rem;
+}
+
+.loading,
+.empty {
+  text-align: center;
+  padding: 2rem;
+  color: #7f8c8d;
+}

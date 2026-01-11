@@ -1,0 +1,45 @@
+<div class="logs-container">
+  <div class="logs-header">
+    <h2>Vehicle Logs</h2>
+    <button (click)="refresh()" [disabled]="loading" class="refresh-button">
+      Refresh
+    </button>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <div *ngIf="loading && detections.length === 0" class="loading">
+    Loading...
+  </div>
+
+  <div *ngIf="!loading && detections.length === 0" class="empty">
+    No vehicle logs found
+  </div>
+
+  <table *ngIf="detections.length > 0" class="logs-table">
+    <thead>
+      <tr>
+        <th>Plate Number</th>
+        <th>Confidence</th>
+        <th>Timestamp</th>
+        <th>Bounding Box</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let detection of detections">
+        <td class="plate-cell">{{ detection.plate_text }}</td>
+        <td>{{ (detection.confidence * 100).toFixed(1) }}%</td>
+        <td>{{ detection.timestamp | date:'medium' }}</td>
+        <td class="bbox-cell">[{{ detection.bbox.join(', ') }}]</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="detections.length > 0" class="pagination">
+    <button (click)="previousPage()" [disabled]="page === 0 || loading">Previous</button>
+    <span>Page {{ page + 1 }}</span>
+    <button (click)="nextPage()" [disabled]="loading">Next</button>
+  </div>
+</div>

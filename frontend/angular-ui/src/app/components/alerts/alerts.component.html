@@ -1,0 +1,56 @@
+<div class="alerts-container">
+  <div class="alerts-header">
+    <h2>Alerts</h2>
+    <div class="header-actions">
+      <div class="time-range-buttons">
+        <button 
+          (click)="changeTimeRange(1)" 
+          [class.active]="hours === 1"
+          class="time-button">
+          Last Hour
+        </button>
+        <button 
+          (click)="changeTimeRange(24)" 
+          [class.active]="hours === 24"
+          class="time-button">
+          Last 24 Hours
+        </button>
+        <button 
+          (click)="changeTimeRange(168)" 
+          [class.active]="hours === 168"
+          class="time-button">
+          Last Week
+        </button>
+      </div>
+      <button (click)="refresh()" [disabled]="loading" class="refresh-button">
+        Refresh
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <div *ngIf="loading && alerts.length === 0" class="loading">
+    Loading alerts...
+  </div>
+
+  <div *ngIf="!loading && alerts.length === 0" class="empty">
+    No alerts found in the selected time range
+  </div>
+
+  <div *ngIf="alerts.length > 0" class="alerts-grid">
+    <div *ngFor="let alert of alerts" class="alert-card">
+      <div class="alert-header">
+        <span class="alert-badge">ALERT</span>
+        <span class="alert-time">{{ alert.timestamp | date:'short' }}</span>
+      </div>
+      <div class="alert-plate">{{ alert.plate_text }}</div>
+      <div class="alert-description">{{ alert.description }}</div>
+      <div *ngIf="alert.rule_name" class="alert-rule">
+        Rule: {{ alert.rule_name }}
+      </div>
+    </div>
+  </div>
+</div>

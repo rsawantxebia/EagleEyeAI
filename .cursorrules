@@ -1,0 +1,230 @@
+# ============================================================
+# Cursor Rules for ANPR AI System
+# Compatible Libraries + Cursor Code Generation Safe
+# ============================================================
+
+PROJECT CONTEXT
+This project is an Automatic Number Plate Recognition (ANPR) system
+built for a hackathon using ONLY free and open-source technologies.
+
+The code MUST be:
+- Runnable immediately after generation
+- Compatible across libraries
+- Safe for Cursor AI code generation
+- Simple, modular, and explainable
+
+---------------------------------------------------------------
+CORE GOALS
+---------------------------------------------------------------
+- Working demo > theoretical perfection
+- Stability over optimization
+- Clear separation of concerns
+- No paid APIs
+- Laptop-friendly execution
+
+---------------------------------------------------------------
+LANGUAGE & PLATFORM
+---------------------------------------------------------------
+Backend Language:
+- Python 3.9 or 3.10 ONLY
+
+Frontend Language:
+- TypeScript (Angular latest stable)
+
+---------------------------------------------------------------
+APPROVED & COMPATIBLE TECH STACK (STRICT)
+---------------------------------------------------------------
+
+Computer Vision:
+- OpenCV (cv2) ONLY for:
+- Video capture
+- Image cropping
+- Basic drawing
+- Do NOT use OpenCV DNN module
+
+Detection:
+- YOLOv8 via Ultralytics package
+- Use pretrained YOLOv8 models only
+
+OCR:
+- EasyOCR
+- English language only
+
+Backend API:
+- FastAPI
+- Uvicorn for server
+
+Database:
+- PostgreSQL
+- SQLAlchemy ORM
+- psycopg2-binary driver
+
+Frontend UI:
+- Angular (latest stable)
+- Angular Material (optional)
+- REST API communication only
+
+AI Agents:
+- Plain Python classes
+- LangChain OPTIONAL
+- Local LLM ONLY (Ollama / GPT4All)
+- Agents must not directly call DB or camera
+
+---------------------------------------------------------------
+STRICT COMPATIBILITY RULES
+---------------------------------------------------------------
+- Do NOT mix async DB calls with sync OpenCV loops
+- Do NOT use experimental Ultralytics APIs
+- Do NOT use OpenCV GUI calls in backend services
+- Do NOT use deprecated Angular APIs
+- Do NOT assume GPU availability
+
+---------------------------------------------------------------
+ARCHITECTURE RULES
+---------------------------------------------------------------
+
+Vision code location:
+src/vision/
+
+Agent logic location:
+src/agents/
+
+Backend API location:
+src/backend/
+
+Database access:
+src/database/ ONLY
+
+Frontend:
+frontend/angular-ui/
+
+No cross-layer imports allowed.
+
+---------------------------------------------------------------
+VISION LAYER RULES
+---------------------------------------------------------------
+- Use OpenCV VideoCapture for camera
+- Convert frames to NumPy arrays
+- YOLO receives NumPy arrays
+- OCR receives cropped NumPy arrays
+- Vision layer MUST NOT decide actions
+
+Vision Agent output format (MANDATORY):
+{
+plate_text: str,
+confidence: float,
+bbox: [x1, y1, x2, y2],
+timestamp: ISO-8601 string
+}
+
+---------------------------------------------------------------
+AGENT RULES
+---------------------------------------------------------------
+
+Vision Agent:
+- Detection + OCR ONLY
+
+Validation Agent:
+- Regex-based validation
+- Indian number plate formats supported
+- No ML allowed
+
+Event Agent:
+- Rule-based only
+- Reads rules from config/rules.json
+- Outputs:
+ALLOW | ALERT | LOG_ONLY
+
+Query Agent (Optional):
+- Converts NL → SQL
+- Uses LangChain + local LLM
+- Must produce valid PostgreSQL SQL
+
+---------------------------------------------------------------
+BACKEND API RULES (FastAPI)
+---------------------------------------------------------------
+- Use Pydantic schemas for all requests/responses
+- API must be RESTful
+- No business logic in routes
+- All heavy processing delegated to agents
+
+Required endpoints:
+- GET /detections
+- GET /events
+- POST /detect
+- GET /alerts
+
+---------------------------------------------------------------
+DATABASE RULES (PostgreSQL)
+---------------------------------------------------------------
+- Use SQLAlchemy ORM ONLY
+- Tables:
+vehicles
+detections
+events
+- Use environment variables for DB config
+- No raw SQL except in Query Agent
+
+---------------------------------------------------------------
+FRONTEND RULES (Angular)
+---------------------------------------------------------------
+- Components must be dumb/presentational
+- Services handle API calls
+- No business rules in UI
+- Use interfaces for API responses
+- Error handling must be user-friendly
+
+UI pages:
+- Dashboard
+- Vehicle Logs
+- Alerts
+- Search / Filters
+
+---------------------------------------------------------------
+ERROR HANDLING
+---------------------------------------------------------------
+- OCR failure must not crash pipeline
+- Empty detections handled gracefully
+- Backend must always return JSON
+- All errors logged via utils/logger.py
+
+---------------------------------------------------------------
+PERFORMANCE RULES
+---------------------------------------------------------------
+- CPU-first execution
+- Frame skipping allowed
+- Batch DB writes preferred
+- No model retraining at runtime
+
+---------------------------------------------------------------
+HACKATHON DEMO RULES
+---------------------------------------------------------------
+Demo MUST show:
+Camera
+→ Detection
+→ Plate text
+→ Validation
+→ Decision
+→ Angular Dashboard
+
+Mock data allowed if hardware fails.
+
+---------------------------------------------------------------
+DO NOT DO
+---------------------------------------------------------------
+- Do NOT use paid APIs
+- Do NOT tightly couple agents
+- Do NOT bypass validation agent
+- Do NOT hardcode credentials
+- Do NOT generate pseudo-code
+
+---------------------------------------------------------------
+EXPECTED OUTPUT QUALITY
+---------------------------------------------------------------
+- Runnable code
+- Clear imports
+- Compatible libraries
+- Easy to explain to judges
+- Demo-ready reliability
+
+# END OF CURSOR RULES
