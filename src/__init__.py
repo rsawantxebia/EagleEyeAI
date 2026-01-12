@@ -1,1 +1,1 @@
-"""ANPR System source code."""
+"""EagleEyeAI source code."""

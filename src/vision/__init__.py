@@ -1,4 +1,4 @@
-"""Vision layer for ANPR system - detection and OCR."""
+"""Vision layer for EagleEyeAI - detection and OCR."""
 from .detector import PlateDetector
 from .ocr_engine import OCREngine
 

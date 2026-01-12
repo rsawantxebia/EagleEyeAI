@@ -1,5 +1,5 @@
 """
-Logger utility for ANPR system.
+Logger utility for EagleEyeAI.
 Handles all logging with appropriate levels.
 """
 import logging

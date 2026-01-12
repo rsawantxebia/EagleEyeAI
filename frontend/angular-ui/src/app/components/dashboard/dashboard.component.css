@@ -75,6 +75,126 @@
   cursor: not-allowed;
 }
 
+.camera-button {
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 0.9rem;
+}
+
+.camera-button:hover {
+  background-color: #229954;
+}
+
+.camera-button.stop {
+  background-color: #e74c3c;
+}
+
+.camera-button.stop:hover {
+  background-color: #c0392b;
+}
+
+.camera-preview {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.camera-video {
+  width: 100%;
+  max-width: 640px;
+  border-radius: 8px;
+  background: #000;
+  display: block;
+  margin: 0 auto;
+}
+
+.camera-controls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.capture-button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.capture-button:hover:not(:disabled) {
+  background-color: #2980b9;
+}
+
+.capture-button:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+}
+
+.stop-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.stop-button:hover {
+  background-color: #c0392b;
+}
+
+.captured-preview {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.captured-preview p {
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+  font-weight: bold;
+}
+
+.captured-img {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 4px;
+  border: 2px solid #3498db;
+}
+
+.backend-camera-button {
+  background-color: #9b59b6;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 0.9rem;
+}
+
+.backend-camera-button:hover:not(:disabled) {
+  background-color: #8e44ad;
+}
+
+.backend-camera-button:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+}
+
 .error-message {
   background-color: #e74c3c;
   color: white;

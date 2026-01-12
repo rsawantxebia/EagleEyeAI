@@ -1,4 +1,4 @@
-"""Database access layer for ANPR system."""
+"""Database access layer for EagleEyeAI."""
 from .connection import get_db, get_db_session, init_db, engine
 from .models import Base, Vehicle, Detection, Event
 

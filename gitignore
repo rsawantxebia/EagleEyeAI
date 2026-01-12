@@ -1,0 +1,183 @@
+# ============================================================
+# EagleEyeAI - Git Ignore File
+# ============================================================
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
+# Note: .env.example should be tracked (not ignored)
+
+# IDE and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# Logs
+logs/
+*.log
+server.log
+*.log.*
+angular.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Node.js and npm
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+# Note: package-lock.json is tracked for consistency, but can be ignored if preferred
+# Uncomment the line above if you want to ignore package-lock.json
+
+# Angular
+frontend/angular-ui/dist/
+frontend/angular-ui/.angular/
+frontend/angular-ui/.angular/cache/
+frontend/angular-ui/.angular/compiler/
+frontend/angular-ui/.angular/tsc/
+frontend/angular-ui/.sass-cache/
+frontend/angular-ui/connect.lock
+frontend/angular-ui/coverage/
+frontend/angular-ui/libpeerconnection.log
+frontend/angular-ui/testem.log
+frontend/angular-ui/typings/
+
+# TypeScript
+*.tsbuildinfo
+
+# Machine Learning Models (large files)
+*.pt
+*.onnx
+*.pth
+*.h5
+*.pb
+*.tflite
+models/
+# Note: yolov8n.pt is tracked for demo purposes, but large model files should be ignored
+# Uncomment the following line if you want to ignore model files:
+# yolov8n.pt
+
+# Data and Images
+data/
+images/
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.bmp
+*.tiff
+# Note: samples/ directory contains sample images for testing
+# Uncomment the following line if you want to ignore sample images:
+# samples/
+
+# Temporary Files
+*.tmp
+*.temp
+*.bak
+*.backup
+*.cache
+.cache/
+
+# Coverage Reports
+htmlcov/
+.coverage
+.coverage.*
+coverage/
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# Project Specific
+# Server logs
+server.log
+*.log.*
+
+# Build artifacts
+*.pyc
+*.pyo
+*.pyd
+
+# Keep important files (explicitly track)
+!.env.example
+!README.md
+!requirements.txt
+!package.json
+!package-lock.json
+!yolov8n.pt
+!samples/sample_license_plate.jpg
+
+
+frontend/angular-ui/.npm/
+frontend/angular-ui/node_modules/

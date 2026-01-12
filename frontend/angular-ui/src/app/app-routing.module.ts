@@ -3,12 +3,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { VehicleLogsComponent } from './components/vehicle-logs/vehicle-logs.component';
 import { AlertsComponent } from './components/alerts/alerts.component';
+import { ConstructionSiteComponent } from './components/construction-site/construction-site.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'logs', component: VehicleLogsComponent },
-  { path: 'alerts', component: AlertsComponent }
+  { path: 'alerts', component: AlertsComponent },
+  { path: 'construction-site', component: ConstructionSiteComponent }
 ];
 
 @NgModule({

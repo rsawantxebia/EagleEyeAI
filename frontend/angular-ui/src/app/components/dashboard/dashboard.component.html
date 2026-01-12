@@ -13,9 +13,35 @@
       <div class="url-input">
         <input type="text" [(ngModel)]="imageUrl" placeholder="Or enter image URL" class="url-field">
       </div>
-      <button (click)="triggerDetection()" [disabled]="loading" class="detect-button">
+      <button 
+        (click)="showCamera ? stopCamera() : startCamera()" 
+        [class]="showCamera ? 'camera-button stop' : 'camera-button'"
+        [disabled]="loading"
+        type="button">
+        {{ showCamera ? 'Stop Camera' : 'Use Camera' }}
+      </button>
+      <button (click)="triggerDetection()" [disabled]="loading || (!selectedFile && !imageUrl)" class="detect-button">
         {{ loading ? 'Processing...' : 'Detect Plate' }}
       </button>
+    </div>
+
+    <!-- Camera Preview -->
+    <div *ngIf="showCamera" class="camera-preview">
+      <video id="camera-video" autoplay playsinline [srcObject]="stream" class="camera-video"></video>
+      <div class="camera-controls">
+        <button (click)="capturePhoto()" class="capture-button" [disabled]="!stream || loading">
+          {{ loading ? 'Processing...' : 'Capture & Detect' }}
+        </button>
+        <button (click)="stopCamera()" class="stop-button" [disabled]="loading">
+          Cancel
+        </button>
+      </div>
+    </div>
+    
+    <!-- Show captured image preview when available (even after camera is closed) -->
+    <div *ngIf="capturedImage && !showCamera" class="captured-preview">
+      <p>Captured Image:</p>
+      <img [src]="capturedImage" alt="Captured" class="captured-img">
     </div>
   </div>
 

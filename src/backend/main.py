@@ -1,6 +1,6 @@
 """
 FastAPI application main file.
-Entry point for the ANPR backend API.
+Entry point for the EagleEyeAI backend API.
 """
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -11,8 +11,8 @@ from utils.logger import logger
 
 # Create FastAPI app
 app = FastAPI(
-    title="ANPR System API",
-    description="Automatic Number Plate Recognition System API",
+    title="EagleEyeAI API",
+    description="EagleEyeAI - Automatic Number Plate Recognition System API",
     version="1.0.0"
 )
 
@@ -34,7 +34,7 @@ async def startup_event():
     """Initialize database on startup."""
     try:
         init_db()
-        logger.info("ANPR API started successfully")
+        logger.info("EagleEyeAI API started successfully")
     except Exception as e:
         logger.error(f"Error during startup: {e}")
 
@@ -43,7 +43,7 @@ async def startup_event():
 async def root():
     """Root endpoint."""
     return {
-        "message": "ANPR System API",
+        "message": "EagleEyeAI API",
         "version": "1.0.0",
         "docs": "/docs"
     }

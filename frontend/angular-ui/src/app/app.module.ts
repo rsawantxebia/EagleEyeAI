@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { VehicleLogsComponent } from './components/vehicle-logs/vehicle-logs.component';
 import { AlertsComponent } from './components/alerts/alerts.component';
+import { ConstructionSiteComponent } from './components/construction-site/construction-site.component';
 import { AnprService } from './services/anpr.service';
 
 @NgModule({
@@ -17,7 +18,8 @@ import { AnprService } from './services/anpr.service';
     AppComponent,
     DashboardComponent,
     VehicleLogsComponent,
-    AlertsComponent
+    AlertsComponent,
+    ConstructionSiteComponent
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,6 @@
 # PostgreSQL Database Setup Guide
 
-This guide will help you set up PostgreSQL for the ANPR system.
+This guide will help you set up PostgreSQL for EagleEyeAI.
 
 ## Option 1: Install PostgreSQL (Recommended for Production)
 

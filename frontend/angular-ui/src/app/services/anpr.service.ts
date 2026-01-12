@@ -69,13 +69,21 @@ export class AnprService {
   detectPlate(file?: File, imageUrl?: string, useCamera: boolean = false): Observable<Detection> {
     const formData = new FormData();
     
-    if (file) {
+    // Only append file if it exists and is not empty
+    if (file && file.size > 0) {
       formData.append('file', file);
+      console.log('Sending file:', file.name, file.size, 'bytes');
     }
-    if (imageUrl) {
+    
+    // Only append image_url if it exists and is not empty
+    if (imageUrl && imageUrl.trim()) {
       formData.append('image_url', imageUrl);
+      console.log('Sending image_url:', imageUrl);
     }
+    
+    // Always append use_camera flag
     formData.append('use_camera', useCamera.toString());
+    console.log('use_camera flag:', useCamera);
     
     return this.http.post<Detection>(`${this.apiUrl}/detect`, formData);
   }

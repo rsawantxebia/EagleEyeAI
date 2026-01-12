@@ -41,7 +41,7 @@ git push -u origin main
 
 ## Current Status
 
-✅ **Commit created**: `4b8ce38` - "Initial commit: ANPR System with FastAPI backend and Angular frontend"
+✅ **Commit created**: `4b8ce38` - "Initial commit: EagleEyeAI with FastAPI backend and Angular frontend"
 ✅ **Branch**: `main`
 ✅ **Remote**: `https://github.com/XI2952/EagleEyeAI.git`
 ⏳ **Ready to push**: All files committed

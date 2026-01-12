@@ -1,0 +1,165 @@
+<div class="construction-site-container">
+  <h1 class="page-title">Construction Site Monitoring</h1>
+  <p class="page-subtitle">
+    ANPR-powered automated tracking replaces manual registers and prevents material theft
+  </p>
+
+  <!-- Section A: Live Material Truck Tracking -->
+  <section class="section section-a">
+    <h2 class="section-title">
+      <span class="section-icon">🚛</span>
+      Live Material Truck Tracking
+    </h2>
+    <p class="section-description">
+      <strong>ANPR Solution:</strong> Replaces manual entry registers with automated real-time tracking.
+      All material trucks are automatically logged with plate number, category, direction, and gate information.
+    </p>
+
+    <div *ngIf="liveEventsLoading" class="loading-state">
+      <p>Loading live events...</p>
+    </div>
+
+    <div *ngIf="liveEventsError" class="error-state">
+      <p>{{ liveEventsError }}</p>
+      <button (click)="loadLiveEvents()" class="retry-button">Retry</button>
+    </div>
+
+    <div *ngIf="!liveEventsLoading && !liveEventsError" class="table-container">
+      <table class="events-table">
+        <thead>
+          <tr>
+            <th>Plate Number</th>
+            <th>Vehicle Category</th>
+            <th>Entry/Exit</th>
+            <th>Gate Name</th>
+            <th>Time</th>
+            <th>Decision</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let event of liveEvents" class="event-row">
+            <td class="plate-number">{{ event.plateNumber }}</td>
+            <td class="vehicle-category">{{ event.vehicleCategory }}</td>
+            <td>
+              <span [class]="'direction-badge direction-' + event.direction.toLowerCase()">
+                {{ event.direction }}
+              </span>
+            </td>
+            <td class="gate-name">{{ event.gateName }}</td>
+            <td class="timestamp">{{ formatTimestamp(event.timestamp) }}</td>
+            <td>
+              <span [class]="'decision-badge ' + getDecisionClass(event.decision)">
+                {{ event.decision }}
+              </span>
+            </td>
+          </tr>
+          <tr *ngIf="liveEvents.length === 0" class="empty-row">
+            <td colspan="6" class="empty-message">No events found</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Section B: Material Theft Alerts -->
+  <section class="section section-b">
+    <h2 class="section-title">
+      <span class="section-icon">⚠️</span>
+      Material Theft Alerts
+    </h2>
+    <p class="section-description">
+      <strong>ANPR Solution:</strong> Detects and prevents unauthorized material exits in real-time.
+      Security is automatically alerted when suspicious material movements are detected.
+    </p>
+
+    <div *ngIf="alertsLoading" class="loading-state">
+      <p>Loading alerts...</p>
+    </div>
+
+    <div *ngIf="alertsError" class="error-state">
+      <p>{{ alertsError }}</p>
+      <button (click)="loadTheftAlerts()" class="retry-button">Retry</button>
+    </div>
+
+    <div *ngIf="!alertsLoading && !alertsError" class="alerts-container">
+      <div *ngIf="theftAlerts.length === 0" class="no-alerts">
+        <p>✅ No material theft alerts. All movements are authorized.</p>
+      </div>
+      
+      <div *ngFor="let alert of theftAlerts" class="alert-card alert-highlight">
+        <div class="alert-header">
+          <span class="alert-icon">🚨</span>
+          <span class="alert-type" [class]="getAlertTypeClass(alert.alertType)">
+            {{ alert.alertType }}
+          </span>
+        </div>
+        <div class="alert-body">
+          <p class="alert-message">{{ alert.message }}</p>
+          <div class="alert-details">
+            <span class="alert-plate">Plate: <strong>{{ alert.plateNumber }}</strong></span>
+            <span class="alert-time">Time: {{ formatTimestamp(alert.timestamp) }}</span>
+          </div>
+          <p *ngIf="alert.description" class="alert-description">{{ alert.description }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section C: Vendor-Wise Delivery Analytics -->
+  <section class="section section-c">
+    <h2 class="section-title">
+      <span class="section-icon">📊</span>
+      Vendor-Wise Delivery Analytics
+    </h2>
+    <p class="section-description">
+      <strong>ANPR Solution:</strong> Prevents fake delivery claims by tracking vendor deliveries using historical data.
+      Analytics show delivery patterns, durations, and suspicious activities for each vendor.
+    </p>
+
+    <div *ngIf="analyticsLoading" class="loading-state">
+      <p>Loading vendor analytics...</p>
+    </div>
+
+    <div *ngIf="analyticsError" class="error-state">
+      <p>{{ analyticsError }}</p>
+      <button (click)="loadVendorAnalytics()" class="retry-button">Retry</button>
+    </div>
+
+    <div *ngIf="!analyticsLoading && !analyticsError" class="analytics-container">
+      <div *ngIf="vendorAnalytics.length === 0" class="no-analytics">
+        <p>No vendor analytics available</p>
+      </div>
+
+      <div class="vendor-cards">
+        <div *ngFor="let vendor of vendorAnalytics" class="vendor-card">
+          <div class="vendor-header">
+            <h3 class="vendor-name">{{ vendor.vendorName }}</h3>
+            <span *ngIf="vendor.suspiciousExits > 0" class="suspicious-badge">
+              ⚠️ {{ vendor.suspiciousExits }} Suspicious
+            </span>
+          </div>
+          <div class="vendor-stats">
+            <div class="stat-item">
+              <span class="stat-label">Deliveries Today:</span>
+              <span class="stat-value">{{ vendor.deliveriesToday }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Avg. Duration:</span>
+              <span class="stat-value">{{ formatDuration(vendor.averageDuration) }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Suspicious Exits:</span>
+              <span class="stat-value" [class.suspicious]="vendor.suspiciousExits > 0">
+                {{ vendor.suspiciousExits }}
+              </span>
+            </div>
+            <div *ngIf="vendor.lastDeliveryTime" class="stat-item">
+              <span class="stat-label">Last Delivery:</span>
+              <span class="stat-value">{{ formatTimestamp(vendor.lastDeliveryTime) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

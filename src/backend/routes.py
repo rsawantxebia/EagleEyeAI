@@ -1,8 +1,8 @@
 """
-FastAPI routes for ANPR system.
+FastAPI routes for EagleEyeAI.
 Handles all API endpoints.
 """
-from typing import List, Optional
+from typing import List, Optional, Union
 from datetime import datetime, timedelta
 from pathlib import Path
 import cv2
@@ -60,6 +60,43 @@ def load_image(image_url: Optional[str]) -> np.ndarray:
     except Exception as e:
         logger.error(f"Error loading image: {e}")
         raise HTTPException(status_code=400, detail=f"Failed to load image: {str(e)}")
+
+
+def capture_camera_frame(camera_index: int = 0, timeout: int = 5) -> np.ndarray:
+    """
+    Capture a frame from the camera.
+    
+    Args:
+        camera_index: Camera device index (default: 0)
+        timeout: Timeout in seconds to wait for camera
+    
+    Returns:
+        NumPy array representing the captured frame (BGR format)
+    """
+    try:
+        # Open camera
+        cap = cv2.VideoCapture(camera_index)
+        
+        if not cap.isOpened():
+            raise ValueError(f"Could not open camera {camera_index}")
+        
+        # Set camera properties for better quality
+        cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+        
+        # Read frame
+        ret, frame = cap.read()
+        cap.release()
+        
+        if not ret or frame is None:
+            raise ValueError("Failed to capture frame from camera")
+        
+        logger.info(f"Successfully captured frame from camera {camera_index}")
+        return frame
+        
+    except Exception as e:
+        logger.error(f"Error capturing from camera: {e}")
+        raise HTTPException(status_code=500, detail=f"Camera capture failed: {str(e)}")
 
 
 # Initialize agents (singleton pattern for demo)
@@ -168,7 +205,7 @@ def get_events(
 
 @router.post("/detect", response_model=DetectionResponse)
 async def detect_plate(
-    file: UploadFile = File(None),
+    file: Optional[UploadFile] = File(None),
     image_url: Optional[str] = Form(None),
     use_camera: bool = Form(False),
     db: Session = Depends(get_db)
@@ -178,7 +215,7 @@ async def detect_plate(
     Accepts either:
     - file: Uploaded image file (multipart/form-data)
     - image_url: URL to an image
-    - use_camera: Use camera (not implemented yet)
+    - use_camera: Use backend camera (server-side camera capture)
     """
     try:
         vision_agent = get_vision_agent()
@@ -187,28 +224,83 @@ async def detect_plate(
         
         frame = None
         
-        # Priority: file upload > image_url > use_camera > sample image
-        if file and file.filename:
-            # Read uploaded file
-            contents = await file.read()
-            nparr = np.frombuffer(contents, np.uint8)
+        # Check if file was actually provided (not just empty UploadFile)
+        has_file = False
+        file_contents = None
+        
+        if file is not None:
+            # Check if file has a filename (indicates it was actually uploaded)
+            filename = getattr(file, 'filename', None)
+            if filename and filename.strip():
+                # Try to read the file to verify it has content
+                try:
+                    file_contents = await file.read()
+                    if file_contents and len(file_contents) > 0:
+                        has_file = True
+                        # Reset file pointer for later reading
+                        await file.seek(0)
+                    else:
+                        has_file = False
+                except Exception as e:
+                    logger.debug(f"Error reading file: {e}")
+                    has_file = False
+            else:
+                has_file = False
+        
+        logger.info(f"Request parameters - has_file: {has_file}, use_camera: {use_camera}, image_url: {bool(image_url)}")
+        
+        # Priority: use_camera (if explicitly requested and no file) > file upload > image_url > sample image
+        if use_camera and not has_file:
+            # Backend camera capture (explicitly requested, no file provided)
+            try:
+                frame = capture_camera_frame(camera_index=0)
+                logger.info("Processing frame from backend camera")
+            except Exception as e:
+                logger.error(f"Backend camera capture error: {e}")
+                # Fallback to sample image if camera fails
+                sample_path = Path(__file__).parent.parent.parent / "samples" / "sample_license_plate.jpg"
+                if sample_path.exists():
+                    frame = cv2.imread(str(sample_path))
+                    logger.warning("Backend camera capture failed, using sample image as fallback")
+                else:
+                    raise HTTPException(status_code=500, detail=f"Backend camera capture failed: {str(e)}")
+        elif has_file:
+            # Read uploaded file (frontend camera capture or file upload)
+            if file_contents is None:
+                file_contents = await file.read()
+            
+            if not file_contents or len(file_contents) == 0:
+                raise HTTPException(status_code=400, detail="Empty file uploaded")
+            
+            nparr = np.frombuffer(file_contents, np.uint8)
             frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
             if frame is None:
-                raise HTTPException(status_code=400, detail="Invalid image file")
-            logger.info(f"Processing uploaded file: {file.filename}")
-        elif image_url:
+                filename = getattr(file, 'filename', 'unknown')
+                logger.error(f"Failed to decode image from file: {filename}, size: {len(file_contents)} bytes")
+                raise HTTPException(status_code=400, detail="Invalid image file - could not decode image")
+            
+            # Optimize: Resize large images for faster processing (max 1920x1080)
+            h, w = frame.shape[:2]
+            max_dimension = 1920
+            if max(h, w) > max_dimension:
+                scale = max_dimension / max(h, w)
+                new_w = int(w * scale)
+                new_h = int(h * scale)
+                frame = cv2.resize(frame, (new_w, new_h), interpolation=cv2.INTER_AREA)
+                logger.info(f"Resized image from {w}x{h} to {new_w}x{new_h} for faster processing")
+            
+            filename = getattr(file, 'filename', 'unknown')
+            logger.info(f"Processing uploaded file: {filename}, size: {len(file_contents)} bytes, frame shape: {frame.shape}")
+        elif image_url and image_url.strip():
             # Load from URL
             frame = load_image(image_url)
             logger.info(f"Processing image from URL: {image_url}")
-        elif use_camera:
-            # Camera capture (not implemented)
-            raise HTTPException(status_code=501, detail="Camera capture not implemented yet")
         else:
             # No input provided - use sample image as fallback
             sample_path = Path(__file__).parent.parent.parent / "samples" / "sample_license_plate.jpg"
             if sample_path.exists():
                 frame = cv2.imread(str(sample_path))
-                logger.info("No input provided, using sample image")
+                logger.info("No input provided, using sample image as fallback")
             else:
                 # Fallback to mock data
                 logger.warning("No image provided and sample not found, using mock data")
@@ -257,7 +349,7 @@ async def detect_plate(
             vehicle_info
         )
         
-        # Save detection to database
+        # Save detection and event to database (optimized - single commit)
         bbox = vision_result["bbox"]
         detection = Detection(
             vehicle_id=vehicle.id if vehicle else None,
@@ -270,8 +362,7 @@ async def detect_plate(
             timestamp=datetime.fromisoformat(vision_result["timestamp"].replace('Z', '+00:00'))
         )
         db.add(detection)
-        db.commit()
-        db.refresh(detection)
+        db.flush()  # Flush to get detection.id without committing
         
         # Save event to database
         event = Event(
@@ -282,7 +373,8 @@ async def detect_plate(
             rule_name=event_result["rule_name"]
         )
         db.add(event)
-        db.commit()
+        db.commit()  # Single commit for both detection and event
+        db.refresh(detection)
         
         # Convert Detection model to DetectionResponse with bbox as list
         return DetectionResponse(

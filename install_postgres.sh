@@ -2,7 +2,7 @@
 # Quick PostgreSQL installation script for macOS
 
 echo "=========================================="
-echo "PostgreSQL Installation for ANPR System"
+echo "PostgreSQL Installation for EagleEyeAI"
 echo "=========================================="
 echo ""
 

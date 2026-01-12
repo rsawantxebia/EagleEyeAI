@@ -1,5 +1,5 @@
 """
-Database models for ANPR system.
+Database models for EagleEyeAI.
 SQLAlchemy ORM models for vehicles, detections, and events.
 """
 from datetime import datetime

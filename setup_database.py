@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Database setup script for ANPR system.
+Database setup script for EagleEyeAI.
 This script initializes the PostgreSQL database and creates all necessary tables.
 """
 import os
