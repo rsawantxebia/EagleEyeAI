@@ -1,0 +1,5 @@
+cd ImageObjectDetection
+dotnet run -- ".\test-images\test-ball.jpg"
+dotnet run -- ".\test-images\test-book.jpg"
+dotnet run -- ".\test-images\test-multiple.jpg"
+dotnet run -- ".\test-images\test-simple.jpg"

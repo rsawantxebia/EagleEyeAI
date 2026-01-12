@@ -1,0 +1,20 @@
+{
+  "name": "purchase-order-api",
+  "version": "1.0.0",
+  "description": "Web API for Purchase Order management with PostgreSQL",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["api", "express", "postgresql", "purchase-order"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "pg": "^8.11.3",
+    "multer": "^1.4.5-lts.1",
+    "dotenv": "^16.3.1",
+    "cors": "^2.8.5"
+  }
+}
